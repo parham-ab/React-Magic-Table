@@ -1,9 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 // reducers
-import addRowsReducer from "features/addRowsSlice";
+import tableReducer from "features/tableSlice";
 
 export const store = configureStore({
-  reducer: {
-    addRows: addRowsReducer,
-  },
+  reducer: tableReducer,
 });
