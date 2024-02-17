@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 
 const Table = () => {
-  const state = useSelector((state) => state.rows);
+  const rows = useSelector((state) => state.rows);
   const deleteHandler = (e, id) => {
     console.log(id);
   };
-  
+
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto mb-20">
         <table className="table border">
           {/* head */}
           <thead>
@@ -19,12 +19,11 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {/* row 1 */}
-            {state.map((item) => (
-              <tr key={item.id}>
-                <td>{item.priority}</td>
-                <td>{item.name}</td>
-                <td onClick={(e) => deleteHandler(e, item.id)}>delete</td>
+            {rows.map((row) => (
+              <tr key={row.id}>
+                <td>{row.priority}</td>
+                <td>{row.name}</td>
+                <td onClick={(e) => deleteHandler(e, row.id)}>delete</td>
               </tr>
             ))}
           </tbody>
