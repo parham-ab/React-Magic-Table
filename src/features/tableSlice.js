@@ -16,8 +16,21 @@ export const tableSlice = createSlice({
         };
       },
     },
+    deleteRows: (state, action) => {
+      let filteredRows = state.rows.filter((row) => row.id !== action.payload);
+      state.rows = filteredRows;
+    },
+    editRows: (state, action) => {
+      const { id, priority, name } = action.payload;
+      const currentTodo = state.rows.find((item) => item.id === id);
+      // console.log(currentTodo)
+      if (currentTodo) {
+        currentTodo.priority = priority;
+        currentTodo.name = name;
+      }
+    },
   },
 });
 
 export default tableSlice.reducer;
-export const { addRows } = tableSlice.actions;
+export const { addRows, deleteRows, editRows } = tableSlice.actions;

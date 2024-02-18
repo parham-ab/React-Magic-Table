@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Table from "./Table";
 import { addRows } from "features/tableSlice";
 
@@ -15,7 +15,7 @@ const Form = () => {
   };
 
   return (
-    <div>
+    <>
       <form onSubmit={submitHandler}>
         <label className="input input-bordered flex items-center gap-2">
           <input
@@ -51,7 +51,7 @@ const Form = () => {
       </form>
 
       <Table />
-    </div>
+    </>
   );
 };
 

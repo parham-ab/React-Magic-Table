@@ -1,9 +1,20 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteRows, editRows } from "features/tableSlice";
+import EditModal from "../EditModal";
+import { useState } from "react";
 
 const Table = () => {
+  const [currentRow, setCurrentRow] = useState(null);
   const rows = useSelector((state) => state.rows);
-  const deleteHandler = (e, id) => {
-    console.log(id);
+  const dispatch = useDispatch();
+  const deleteHandler = (id) => {
+    dispatch(deleteRows(id));
+  };
+  const editHandler = (id) => {
+    // dispatch(editRows({ id }));
+    document.getElementById("my_modal_1").showModal();
+    let selectedRow = rows.filter((item) => item.id === id);
+    setCurrentRow(selectedRow);
   };
 
   return (
@@ -23,11 +34,16 @@ const Table = () => {
               <tr key={row.id}>
                 <td>{row.priority}</td>
                 <td>{row.name}</td>
-                <td onClick={(e) => deleteHandler(e, row.id)}>delete</td>
+                <td>
+                  <span onClick={() => editHandler(row.id)}>edit</span>
+                  {/* <span onClick={() => editHandler(row.id)}>edit</span> */}
+                  <span onClick={() => deleteHandler(row.id)}>delete</span>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <EditModal currentRow={currentRow} />
       </div>
     </>
   );
