@@ -16,8 +16,11 @@ const Form = () => {
 
   return (
     <>
-      <form onSubmit={submitHandler}>
-        <label className="input input-bordered flex items-center gap-2">
+      <form
+        onSubmit={submitHandler}
+        className="bg-blue-200 w-72 p-5 rounded-xl shadow-xl m-auto"
+      >
+        <label className="input input-bordered input-sm flex items-center gap-2">
           <input
             type="number"
             value={inputVal.priority}
@@ -27,7 +30,7 @@ const Form = () => {
             placeholder="priority"
           />
         </label>
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-bordered input-sm flex items-center gap-2 my-5">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -45,7 +48,7 @@ const Form = () => {
             placeholder="name"
           />
         </label>
-        <button type="submit" className="btn btn-info">
+        <button type="submit" className="btn btn-sm btn-wide btn-info">
           Info
         </button>
       </form>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteRows, editRows } from "features/tableSlice";
+import { deleteRows } from "features/tableSlice";
 import EditModal from "../EditModal";
 import edit from "assets/pencil.svg";
 import trash from "assets/trash.svg";
@@ -15,13 +15,13 @@ const Table = () => {
   const editHandler = (id) => {
     // dispatch(editRows({ id }));
     document.getElementById("my_modal_1").showModal();
-    let selectedRow = rows.filter((item) => item.id === id);
+    let selectedRow = rows.filter((item) => item?.id === id);
     setCurrentRow(selectedRow);
   };
-
   return (
     <>
-      <div className="overflow-x-auto mb-20">
+      {/* {console.log(rows.sort((a, b) => b.priority - a.priority))} */}
+      <div className="overflow-x-auto my-40">
         <table className="table border">
           {/* head */}
           <thead>
@@ -32,14 +32,14 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.id}>
-                <td>{row.priority}</td>
-                <td>{row.name}</td>
+            {rows?.map((row) => (
+              <tr key={row?.id}>
+                <td>{row?.priority}</td>
+                <td>{row?.name}</td>
                 <td>
                   <span className="btn btn-sm btn-circle btn-ghost">
                     <img
-                      onClick={() => editHandler(row.id)}
+                      onClick={() => editHandler(row?.id)}
                       src={edit}
                       alt="edit"
                     />
@@ -47,7 +47,7 @@ const Table = () => {
 
                   <span className="btn btn-sm btn-circle btn-ghost">
                     <img
-                      onClick={() => deleteHandler(row.id)}
+                      onClick={() => deleteHandler(row?.id)}
                       src={trash}
                       alt="trash"
                     />

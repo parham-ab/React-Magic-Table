@@ -9,6 +9,7 @@ export const tableSlice = createSlice({
     addRows: {
       reducer: (state, action) => {
         state.rows.push(action.payload);
+        state.rows = state.rows.sort((a, b) => +a.priority - +b.priority);
       },
       prepare: (priority, name) => {
         return {
@@ -28,6 +29,7 @@ export const tableSlice = createSlice({
         currentTodo.priority = priority;
         currentTodo.name = name;
       }
+      state.rows = state.rows.sort((a, b) => +a.priority - +b.priority);
     },
   },
 });
