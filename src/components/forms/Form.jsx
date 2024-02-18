@@ -12,6 +12,7 @@ const Form = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(addRows(inputVal.priority, inputVal.name));
+    setInputVal({ priority: "", name: "" });
   };
 
   return (
