@@ -1,26 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editRows } from "features/tableSlice";
 import edit from "assets/pencilSquare.svg";
 
 const EditModal = ({ currentRow }) => {
-  const rows = useSelector((state) => state.rows);
   const dispatch = useDispatch();
   const [editedValue, setEditedValue] = useState({
     priority: "",
     name: "",
   });
+  useEffect(() => {
+    if (currentRow && currentRow.length > 0) {
+      const { priority, name } = currentRow[0];
+      setEditedValue({ priority, name });
+    }
+  }, [currentRow]);
   const changeHandler = (e) => {
     setEditedValue({ ...editedValue, [e.target.name]: e.target.value });
   };
   const submitHandler = (e) => {
     e.preventDefault();
     if (currentRow) {
-      const { id, priority, name } = currentRow[0];
-      const currentTodo = rows.filter((item) => item.id === id);
-      dispatch(
-        editRows({ id, priority: editedValue.priority, name: editedValue.name })
-      );
+      const { id } = currentRow[0];
+      dispatch(editRows({ id, ...editedValue }));
     }
   };
 
@@ -48,8 +50,8 @@ const EditModal = ({ currentRow }) => {
                 />
                 <input
                   value={editedValue.name}
-                  placeholder="Name"
                   name={"name"}
+                  placeholder="Name"
                   onChange={changeHandler}
                 />
               </div>
@@ -57,7 +59,7 @@ const EditModal = ({ currentRow }) => {
                 ✕
               </button>
               <button className="" onClick={submitHandler}>
-                submit
+                Submit
               </button>
             </form>
           </div>

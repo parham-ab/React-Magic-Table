@@ -41,7 +41,7 @@ const Table = () => {
                     key={row?.id}
                     className={index % 2 === 0 ? "even" : "odd"}
                   >
-                    <td>{row?.priority}</td>
+                    <td className="text-gray-500">{row?.priority}</td>
                     <td>{row?.name}</td>
                     <td>
                       <span className="btn btn-sm btn-circle btn-ghost">
