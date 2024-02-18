@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRows, editRows } from "features/tableSlice";
 import EditModal from "../EditModal";
-import { useState } from "react";
+import edit from "assets/pencil.svg";
+import trash from "assets/trash.svg";
 
 const Table = () => {
   const [currentRow, setCurrentRow] = useState(null);
@@ -35,9 +37,21 @@ const Table = () => {
                 <td>{row.priority}</td>
                 <td>{row.name}</td>
                 <td>
-                  <span onClick={() => editHandler(row.id)}>edit</span>
-                  {/* <span onClick={() => editHandler(row.id)}>edit</span> */}
-                  <span onClick={() => deleteHandler(row.id)}>delete</span>
+                  <span className="btn btn-sm btn-circle btn-ghost">
+                    <img
+                      onClick={() => editHandler(row.id)}
+                      src={edit}
+                      alt="edit"
+                    />
+                  </span>
+
+                  <span className="btn btn-sm btn-circle btn-ghost">
+                    <img
+                      onClick={() => deleteHandler(row.id)}
+                      src={trash}
+                      alt="trash"
+                    />
+                  </span>
                 </td>
               </tr>
             ))}
