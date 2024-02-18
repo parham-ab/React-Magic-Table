@@ -1,59 +1,65 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
 import Table from "./Table";
 import { addRows } from "features/tableSlice";
+import formSchema from "utils/validations/form";
+import { useEffect } from "react";
 
 const Form = () => {
-  const [inputVal, setInputVal] = useState({ priority: "", name: "" });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isDirty, isValid, isSubmitting, errors, isSubmitSuccessful },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(formSchema),
+  });
+
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful]);
   const dispatch = useDispatch();
-  const changeHandler = (e) => {
-    setInputVal({ ...inputVal, [e.target.name]: e.target.value });
-  };
-  const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(addRows(inputVal.priority, inputVal.name));
-    setInputVal({ priority: "", name: "" });
+
+  const submitHandler = (data) => {
+    dispatch(addRows(data.priority, data.name));
+    setValue("priority", "");
+    setValue("name", "");
   };
 
   return (
     <>
       <form
-        onSubmit={submitHandler}
+        onSubmit={handleSubmit(submitHandler)}
         className="bg-blue-200 w-72 p-5 rounded-xl shadow-xl m-auto"
       >
-        <label className="input input-bordered input-sm flex items-center gap-2">
+        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="number"
-            value={inputVal.priority}
-            name="priority"
-            onChange={changeHandler}
+            {...register("priority")}
             className="grow"
-            placeholder="priority"
+            placeholder="Priority"
           />
         </label>
-        <label className="input input-bordered input-sm flex items-center gap-2 my-5">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="w-4 h-4 opacity-70"
-          >
-            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-          </svg>
+
+        <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="text"
-            value={inputVal.name}
-            name="name"
-            onChange={changeHandler}
+            {...register("name")}
             className="grow"
-            placeholder="name"
+            placeholder="Name"
           />
         </label>
-        <button type="submit" className="btn btn-sm btn-wide btn-info">
-          Info
+
+        <button
+          disabled={!isDirty || !isValid || isSubmitting}
+          type="submit"
+          className="btn btn-sm btn-wide btn-info"
+        >
+          Add
         </button>
       </form>
-
       <Table />
     </>
   );
