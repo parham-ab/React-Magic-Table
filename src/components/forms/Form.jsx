@@ -12,7 +12,7 @@ const Form = () => {
     register,
     handleSubmit,
     reset,
-    formState: { isDirty, isValid, isSubmitting, errors, isSubmitSuccessful },
+    formState: { isDirty, isValid, isSubmitting, isSubmitSuccessful },
     setValue,
   } = useForm({
     resolver: yupResolver(formSchema),
