@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { routes } from "./routes";
 import PreLoader from "components/common/PreLoader";
 import Layout from "components/Layout/index.jsx";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           />
         ))}
       </Routes>
+      <Toaster />
     </Layout>
   );
 };

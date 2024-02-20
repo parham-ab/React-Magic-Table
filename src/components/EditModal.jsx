@@ -1,14 +1,18 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editRows } from "features/tableSlice";
 import edit from "assets/pencilSquare.svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import editSchema from "utils/validations/form";
+import { hasDuplicateValues } from "utils/hasDuplicateValues";
+import toast from "react-hot-toast";
 const EditModal = ({ currentRow }) => {
+  const rows = useSelector((state) => state.rows);
   const {
     register,
     getValues,
+    handleSubmit,
     formState: { isDirty, isValid, isSubmitting },
     setValue,
   } = useForm({
@@ -22,12 +26,17 @@ const EditModal = ({ currentRow }) => {
       setValue("name", name);
     }
   }, [currentRow]);
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const submitHandler = (data) => {
     if (currentRow) {
       const { id } = currentRow[0];
-      let priority = getValues("priority");
+      let priority = +getValues("priority");
       let name = getValues("name");
+      if (
+        hasDuplicateValues([...rows, { priority: data.priority }], "priority")
+      ) {
+        toast.error("Duplicate priority! Please choose a different priority.");
+        return;
+      }
       dispatch(editRows({ id, priority, name }));
     }
   };
@@ -41,16 +50,15 @@ const EditModal = ({ currentRow }) => {
             <img src={edit} alt="edit" />
           </div>
 
-          <p className="py-4">
-            Press ESC key or click the button below to close
-          </p>
+          <p>Press ESC key or click the button below to close</p>
 
           <div className="modal-action">
-            <form method="dialog">
+            <form method="dialog" className="m-auto">
               <div className="flex flex-col m-auto">
                 <label className="input input-bordered input-sm flex items-center gap-2 my-3">
                   <input
                     placeholder="Priority"
+                    type="number"
                     className="grow"
                     {...register("priority")}
                   />
@@ -58,9 +66,9 @@ const EditModal = ({ currentRow }) => {
                 <label className="input input-bordered input-sm flex items-center gap-2 my-3">
                   <input
                     type="text"
-                    {...register("name")}
                     className="grow"
                     placeholder="Name"
+                    {...register("name")}
                   />
                 </label>
               </div>
@@ -69,8 +77,8 @@ const EditModal = ({ currentRow }) => {
               </button>
               <button
                 disabled={!isDirty || !isValid || isSubmitting}
-                className="btn"
-                onClick={submitHandler}
+                className="btn btn-wide btn-sm btn-primary"
+                onClick={handleSubmit(submitHandler)}
               >
                 Submit
               </button>

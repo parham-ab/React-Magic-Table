@@ -1,13 +1,17 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Table from "./Table";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { addRows } from "features/tableSlice";
 import formSchema from "utils/validations/form";
-import { useEffect } from "react";
 import sparks from "assets/sparks.svg";
+import toast from "react-hot-toast";
+import { hasDuplicateValues } from "../../utils/hasDuplicateValues";
 
 const Form = () => {
+  const rows = useSelector((state) => state.rows);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -17,18 +21,20 @@ const Form = () => {
   } = useForm({
     resolver: yupResolver(formSchema),
   });
-
   useEffect(() => {
     reset();
   }, [isSubmitSuccessful]);
-  const dispatch = useDispatch();
-
   const submitHandler = (data) => {
+    if (
+      hasDuplicateValues([...rows, { priority: data.priority }], "priority")
+    ) {
+      toast.error("Duplicate priority! Please choose a different priority.");
+      return;
+    }
     dispatch(addRows(data.priority, data.name));
     setValue("priority", "");
     setValue("name", "");
   };
-
   return (
     <>
       <form
@@ -46,7 +52,6 @@ const Form = () => {
             placeholder="Priority"
           />
         </label>
-
         <label className="input input-bordered input-sm flex items-center gap-2 my-3">
           <input
             type="text"
@@ -55,7 +60,6 @@ const Form = () => {
             placeholder="Name"
           />
         </label>
-
         <button
           disabled={!isDirty || !isValid || isSubmitting}
           type="submit"
