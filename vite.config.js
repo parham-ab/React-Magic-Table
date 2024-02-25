@@ -27,4 +27,7 @@ export default defineConfig({
       ...pathes,
     },
   },
+  optimizeDeps: {
+    exclude: ["react-virtualized"],
+  },
 });

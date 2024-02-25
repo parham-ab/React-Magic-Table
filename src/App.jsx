@@ -7,22 +7,24 @@ import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
-    <Layout>
-      <Routes>
-        {routes.map((route) => (
-          <Route
-            key={route.title}
-            path={route.path}
-            element={
-              <Suspense fallback={<PreLoader />}>
-                <route.component />
-              </Suspense>
-            }
-          />
-        ))}
-      </Routes>
-      <Toaster />
-    </Layout>
+    <>
+      <Layout>
+        <Routes>
+          {routes.map((route) => (
+            <Route
+              key={route.title}
+              path={route.path}
+              element={
+                <Suspense fallback={<PreLoader />}>
+                  <route.component />
+                </Suspense>
+              }
+            />
+          ))}
+        </Routes>
+        <Toaster />
+      </Layout>
+    </>
   );
 };
 export default App;

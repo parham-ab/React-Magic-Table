@@ -5,7 +5,7 @@ import EditModal from "../EditModal";
 import edit from "assets/pencil.svg";
 import trash from "assets/trash.svg";
 
-const Table = () => {
+const TableContent = () => {
   const [currentRow, setCurrentRow] = useState(null);
   const rows = useSelector((state) => state.rows);
   const dispatch = useDispatch();
@@ -57,10 +57,11 @@ const Table = () => {
             </tbody>
           </table>
         </div>
+
         <EditModal currentRow={currentRow} />
       </div>
     );
   }
 };
 
-export default Table;
+export default TableContent;

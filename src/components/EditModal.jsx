@@ -5,7 +5,6 @@ import edit from "assets/pencilSquare.svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import editSchema from "utils/validations/form";
-import { hasDuplicateValues } from "utils/hasDuplicateValues";
 import toast from "react-hot-toast";
 const EditModal = ({ currentRow }) => {
   const rows = useSelector((state) => state.rows);
@@ -26,24 +25,28 @@ const EditModal = ({ currentRow }) => {
       setValue("name", name);
     }
   }, [currentRow]);
-  const submitHandler = (data) => {
+  const submitHandler = () => {
     if (currentRow) {
       const { id } = currentRow[0];
       let priority = +getValues("priority");
       let name = getValues("name");
       const currentPriority = currentRow[0].priority;
-
-      if (
-        hasDuplicateValues([...rows.filter(row => row.id !== currentRow[0].id), { priority: currentPriority }], "priority")
-
-      ) {
-        toast.error("Duplicate priority! Please choose a different priority.");
-        return;
+      const isPriorityChanged = priority !== currentPriority;
+      if (isPriorityChanged) {
+        const isDuplicatePriority = rows.some(
+          (row) => row.priority === priority
+        );
+        if (isDuplicatePriority) {
+          toast.error(
+            "Duplicate priority! Please choose a different priority."
+          );
+          return;
+        }
       }
       dispatch(editRows({ id, priority, name }));
+      document.getElementById("my_modal_1").close();
     }
   };
-
   return (
     <dialog id="my_modal_1" className="modal">
       <div className="modal-box">

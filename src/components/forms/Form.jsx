@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import Table from "./Table";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addRows } from "features/tableSlice";
 import formSchema from "utils/validations/form";
@@ -9,6 +8,7 @@ import sparks from "assets/sparks.svg";
 import toast from "react-hot-toast";
 import { hasDuplicateValues } from "../../utils/hasDuplicateValues";
 import SubmitButton from "../common/SubmitButton";
+import TableContent from "./TableContent";
 
 const Form = () => {
   const rows = useSelector((state) => state.rows);
@@ -68,7 +68,7 @@ const Form = () => {
           isSubmitting={isSubmitting}
         />
       </form>
-      <Table />
+      <TableContent />
     </>
   );
 };
