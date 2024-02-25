@@ -31,8 +31,11 @@ const EditModal = ({ currentRow }) => {
       const { id } = currentRow[0];
       let priority = +getValues("priority");
       let name = getValues("name");
+      const currentPriority = currentRow[0].priority;
+
       if (
-        hasDuplicateValues([...rows, { priority: data.priority }], "priority")
+        hasDuplicateValues([...rows.filter(row => row.id !== currentRow[0].id), { priority: currentPriority }], "priority")
+
       ) {
         toast.error("Duplicate priority! Please choose a different priority.");
         return;
@@ -42,51 +45,47 @@ const EditModal = ({ currentRow }) => {
   };
 
   return (
-    <>
-      <dialog id="my_modal_1" className="modal">
-        <div className="modal-box">
-          <div className="flex gap-2 items-center">
-            <h3 className="font-bold text-lg">Edit</h3>
-            <img src={edit} alt="edit" />
-          </div>
-
-          <p>Press ESC key or click the button below to close</p>
-
-          <div className="modal-action">
-            <form method="dialog" className="m-auto">
-              <div className="flex flex-col m-auto">
-                <label className="input input-bordered input-sm flex items-center gap-2 my-3">
-                  <input
-                    placeholder="Priority"
-                    type="number"
-                    className="grow"
-                    {...register("priority")}
-                  />
-                </label>
-                <label className="input input-bordered input-sm flex items-center gap-2 my-3">
-                  <input
-                    type="text"
-                    className="grow"
-                    placeholder="Name"
-                    {...register("name")}
-                  />
-                </label>
-              </div>
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 hover:bg-red-500 hover:text-white">
-                ✕
-              </button>
-              <button
-                disabled={!isDirty || !isValid || isSubmitting}
-                className="btn btn-wide btn-sm btn-primary"
-                onClick={handleSubmit(submitHandler)}
-              >
-                Submit
-              </button>
-            </form>
-          </div>
+    <dialog id="my_modal_1" className="modal">
+      <div className="modal-box">
+        <div className="flex gap-2 items-center">
+          <h3 className="font-bold text-lg">Edit</h3>
+          <img src={edit} alt="edit" />
         </div>
-      </dialog>
-    </>
+        <p>Press ESC key or click the button below to close</p>
+        <div className="modal-action">
+          <form method="dialog" className="m-auto">
+            <div className="flex flex-col m-auto">
+              <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+                <input
+                  placeholder="Priority"
+                  type="number"
+                  className="grow"
+                  {...register("priority")}
+                />
+              </label>
+              <label className="input input-bordered input-sm flex items-center gap-2 my-3">
+                <input
+                  type="text"
+                  className="grow"
+                  placeholder="Name"
+                  {...register("name")}
+                />
+              </label>
+            </div>
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 hover:bg-red-500 hover:text-white">
+              ✕
+            </button>
+            <button
+              disabled={!isDirty || !isValid || isSubmitting}
+              className="btn btn-wide btn-sm btn-primary"
+              onClick={handleSubmit(submitHandler)}
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </dialog>
   );
 };
 

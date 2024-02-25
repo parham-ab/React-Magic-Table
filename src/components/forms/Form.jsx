@@ -8,6 +8,7 @@ import formSchema from "utils/validations/form";
 import sparks from "assets/sparks.svg";
 import toast from "react-hot-toast";
 import { hasDuplicateValues } from "../../utils/hasDuplicateValues";
+import SubmitButton from "../common/SubmitButton";
 
 const Form = () => {
   const rows = useSelector((state) => state.rows);
@@ -60,13 +61,12 @@ const Form = () => {
             placeholder="Name"
           />
         </label>
-        <button
-          disabled={!isDirty || !isValid || isSubmitting}
-          type="submit"
-          className="btn btn-sm btn-wide btn-info"
-        >
-          Add
-        </button>
+        <SubmitButton
+          title={"Add"}
+          isDirty={isDirty}
+          isValid={isValid}
+          isSubmitting={isSubmitting}
+        />
       </form>
       <Table />
     </>
