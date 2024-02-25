@@ -30,5 +30,4 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["react-virtualized"],
   },
-  base: "/React-Magic-Table/",
 });
